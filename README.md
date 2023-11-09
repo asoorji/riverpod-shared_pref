@@ -1,4 +1,4 @@
-# Update user profile with riverpod StateNotifier
+# Riverpod and sharedprefernce to update and save  user profile
 
 
 
