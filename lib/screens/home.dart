@@ -2,67 +2,43 @@ import 'package:demo/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../service/data_provider.dart';
-import 'detail.dart';
+import '../state/provider.dart';
 
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
-    final _data = ref.watch(userDataProvider);
+    final userProfile = ref.watch(userProfileProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Riverpod"),
+        title: const Text('User Profile Example'),
       ),
-      body: _data.when(
-          data: (_data) {
-            List<UserModel> userList = _data.map((e) => e).toList();
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: userList.length,
-                          itemBuilder: (_, index) {
-                            return InkWell(
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => DetailScreen(
-                                    e: userList[index],
-                                  ),
-                                ),
-                              ),
-                              child: Card(
-                                color: Colors.blue,
-                                elevation: 4,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: ListTile(
-                                  title: Text(
-                                    userList[index].firstname,
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  subtitle: Text(userList[index].lastname,
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                  trailing: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(userList[index].avatar),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }))
-                ],
-              ),
-            );
-          },
-          error: (err, s) => Text(err.toString()),
-          loading: () => const Center(
-                child: CircularProgressIndicator(),
-              )),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Name: ${userProfile.name}'),
+            Text('Phone: ${userProfile.phone}'),
+            Text('Email: ${userProfile.email}'),
+            Text('Age: ${userProfile.age}'),
+            ElevatedButton(
+              onPressed: () {
+                // Create an updated profile
+                UserProfile updatedProfile = UserProfile(
+                  name: 'Updated Name',
+                  phone: 'Updated Phone',
+                  email: 'updated.email@example.com',
+                  age: 50,
+                );
+                ref.read(userProfileProvider.notifier).state = updatedProfile;
+              },
+              child: const Text('Update Profile'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
