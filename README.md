@@ -1,4 +1,4 @@
-# Riverpod and sharedprefernce to update and save  user profile
+# Riverpod and sharedpreference to update and save  user profile
 
 
 
