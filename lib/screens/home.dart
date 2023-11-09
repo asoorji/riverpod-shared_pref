@@ -1,12 +1,11 @@
+import 'dart:convert';
+
 import 'package:demo/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../state/provider.dart';
 
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key});
-
   @override
   Widget build(BuildContext context, ref) {
     final userProfile = ref.watch(userProfileProvider);
@@ -24,15 +23,19 @@ class MyHomePage extends ConsumerWidget {
             Text('Email: ${userProfile.email}'),
             Text('Age: ${userProfile.age}'),
             ElevatedButton(
-              onPressed: () {
-                // Create an updated profile
+              onPressed: () async {
                 UserProfile updatedProfile = UserProfile(
-                  name: 'Updated Name',
-                  phone: 'Updated Phone',
+                  name: 'Updated Namesss',
+                  phone: 'Updated Phonesddd',
                   email: 'updated.email@example.com',
-                  age: 50,
+                  age: 30,
                 );
+
                 ref.read(userProfileProvider.notifier).state = updatedProfile;
+
+                final sharedPreferences = ref.read(sharedPreferencesProvider);
+                await sharedPreferences.setString(
+                    'userProfile', json.encode(updatedProfile.toJson()));
               },
               child: const Text('Update Profile'),
             ),

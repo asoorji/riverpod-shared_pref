@@ -1,13 +1,26 @@
 class UserProfile {
-  String? name;
-  String? phone;
-  String? email;
-  int? age;
+  String name;
+  String phone;
+  String email;
+  int age;
 
   UserProfile({
-    this.name,
-    this.phone,
-    this.email,
-    this.age,
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.age,
   });
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'phone': phone, 'email': email, 'age': age};
+  }
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      name: json['name'],
+      phone: json['phone'],
+      email: json['email'],
+      age: json['age'],
+    );
+  }
 }
